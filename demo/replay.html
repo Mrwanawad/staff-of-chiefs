@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>staff-of-chiefs: replay of a real run</title>
+<!-- Replays a recorded staff-of-chiefs run (demo/data.js, built by make-data.js) in a terminal so
+     demo/scene.py can film it. Every message, status line frame and number comes from the run;
+     the only edits are elisions marked with ⋮ and the report excerpt in #final. The crew strip
+     under the terminal is driven by the same status-line frames. -->
+<link rel="stylesheet" href="term.css">
+<style>
+  .win { grid-template-rows: 30px minmax(0, 1fr) auto auto auto; }
+  #crew { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; padding: 8px 14px 10px; border-top: 1px solid var(--line); background: #0b0f15; }
+  .cook { display: grid; grid-template-columns: 40px minmax(0, 1fr); align-items: center; gap: 8px; padding: 4px 8px; border-radius: 9px;
+    border: 1px solid transparent; transition: opacity .35s, filter .35s, border-color .35s, background .35s; opacity: .38; filter: grayscale(.85); }
+  .cook img { width: 40px; height: 48px; }
+  .cook b { display: block; font-weight: 600; font-size: 13.5px; }
+  .cook span { display: block; color: var(--dim); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cook.work { opacity: 1; filter: none; border-color: var(--c); background: color-mix(in srgb, var(--c) 9%, transparent); }
+  .cook.work span { color: var(--text); }
+  .cook.done { opacity: .9; filter: none; }
+  .cook.done span { color: var(--green); }
+  .cook.wait { opacity: 1; filter: none; }
+  .cook.wait span { color: var(--amber); }
+  #intro .tag { color: var(--dim); font-size: 13px; letter-spacing: .16em; text-transform: uppercase; margin-top: 8px; }
+</style>
+</head>
+<body>
+<div class="win">
+  <div class="bar"><i></i><i></i><i></i><span>~/toy-api · claude</span><img src="../assets/chef-lead-still.svg" alt=""></div>
+  <div id="log"></div>
+  <div class="row"><b>&gt;</b><input id="prompt" aria-label="Prompt" autocomplete="off" spellcheck="false"></div>
+  <pre id="status" aria-label="Status line"></pre>
+  <div id="crew" aria-label="Crew"></div>
+</div>
+<div id="intro" class="card" aria-label="Intro">
+  <div>
+    <img class="kitchen" src="../assets/kitchen.svg" alt="The staff-of-chiefs chef bots at work">
+    <h2>staff<span>-of-</span>chiefs</h2>
+    <p>Your Claude Code session leads. A kitchen of models does the rest.</p>
+    <div class="tag">replay of a real run · nothing mocked up</div>
+  </div>
+</div>
+<div id="outro" class="card" aria-label="Outro">
+  <div>
+    <img class="kitchen" src="../assets/kitchen.svg" alt="The staff-of-chiefs chef bots at work">
+    <p>One Claude Code command. A team of models. You see who did what.</p>
+    <div class="k">Install: paste into Claude Code</div>
+    <div class="c">Install the Claude Code skill from <b>github.com/Mrwanawad/staff-of-chiefs</b>. Follow INSTALL_FOR_AGENTS.md.</div>
+    <div class="k">Use</div>
+    <div class="c"><b>/staff-of-chiefs</b> --plan &lt;task&gt;</div>
+    <div class="f">MIT · macOS · Linux · Windows · WSL · Node 18+ · everything stays on your machine</div>
+  </div>
+</div>
+<script src="data.js"></script>
+<script>
+const D = window.DEMO;
+const $ = id => document.getElementById(id);
+const log = $('log');
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const wait = ms => new Promise(r => setTimeout(r, ms));
+const SPEED = Number(new URLSearchParams(location.search).get('speed') || 4);
+
+const XC = { 51: '#5fffff', 214: '#ffaf00', 203: '#ff5f5f', 177: '#d787ff', 208: '#ff8700', 45: '#00d7ff', 84: '#5fff87',
+  250: '#bcbcbc', 244: '#808080', 240: '#585858' };
+function ansi(s) {
+  let out = '', open = false;
+  for (const part of String(s).split(/(\x1b\[[0-9;]*m)/)) {
+    const m = /^\x1b\[([0-9;]*)m$/.exec(part);
+    if (!m) { out += esc(part); continue; }
+    if (open) { out += '</span>'; open = false; }
+    const c = /38;5;(\d+)/.exec(m[1]);
+    if (c) { out += `<span style="color:${XC[c[1]] || '#ccc'}">`; open = true; }
+  }
+  return out + (open ? '</span>' : '');
+}
+const plain = s => String(s).replace(/\x1b\[[0-9;]*m/g, '');
+const inline = s => esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/`([^`]+)`/g, '<code>$1</code>');
+function md(text) {
+  const lines = text.split('\n'); let html = '', i = 0;
+  while (i < lines.length) {
+    if (/^\|/.test(lines[i])) {
+      const rows = [];
+      while (i < lines.length && /^\|/.test(lines[i])) { if (!/^\|[\s|:-]+\|$/.test(lines[i])) rows.push(lines[i]); i++; }
+      html += '<table>' + rows.map((r, k) => '<tr>' + r.slice(1, -1).split('|').map(c =>
+        `<${k ? 'td' : 'th'}>${inline(c.trim())}</${k ? 'td' : 'th'}>`).join('') + '</tr>').join('') + '</table>';
+      continue;
+    }
+    if (!/^```/.test(lines[i])) html += inline(lines[i].replace(/^(\s*)- /, '$1• ')) + '\n';
+    i++;
+  }
+  return html.replace(/\n+$/, '');
+}
+function add(cls, html) { const d = document.createElement('div'); d.className = cls; d.innerHTML = html; log.appendChild(d); return d; }
+const you = t => add('you', `<b>&gt;</b>${esc(t)}`);
+const tool = (n, a) => add('tool', `<span class="dot">⏺</span><span class="nm">${esc(n)}</span>(${esc(a)})`);
+const say = t => add('msg', md(t));
+const phase = p => { document.body.dataset.phase = p; crew(); };
+
+// The crew strip: one chef per tier, lit while that agent runs (read from the status-line frame).
+const TIERS = [['haiku', '#5fef8a', 'scout'], ['sonnet', '#3fd2ff', 'builder'], ['lead', '#ffc861', 'main session'],
+  ['opus', '#ff8a3d', 'senior'], ['fable', '#d787ff', 'strategist']];
+$('crew').innerHTML = TIERS.map(([t, c, role]) => `<div class="cook" id="cook-${t}" style="--c:${c}">
+  <img src="../assets/chef-${t}-still.svg" alt=""><div><b style="color:${c}">${t}</b><span>${role}</span></div></div>`).join('');
+let frameNow = -1;
+function crew() {
+  const lines = frameNow >= 0 ? plain(D.frames[frameNow].ansi).split('\n') : [];
+  const p = document.body.dataset.phase;
+  for (const [t, , role] of TIERS) {
+    const el = $('cook-' + t); let cls = '', txt = role;
+    if (t === 'lead') {
+      if (p === 'planning' || p === 'building') { cls = 'work'; txt = p === 'planning' ? 'planning' : 'coding'; }
+      else if (p === 'planned') { cls = 'wait'; txt = 'awaits your OK'; }
+      else if (p === 'finished') { cls = 'done'; txt = '✓ reported'; }
+    } else {
+      const l = lines.find(x => new RegExp(`^[●✓✗] ${t}\\b`).test(x));
+      if (l && l[0] === '●') { cls = 'work'; const m = /›\s*(\S+)/.exec(l); txt = m ? `working › ${m[1]}` : 'working'; }
+      else if (l && l[0] === '✓') { cls = 'done'; txt = '✓ done'; }
+      else if (l && l[0] === '✗') { cls = ''; txt = '✗ no reply'; }
+      else if (t === 'fable' && p === 'finished') txt = 'not needed';
+    }
+    el.className = 'cook ' + cls; el.querySelector('span').textContent = txt;
+    const src = `../assets/chef-${t}${cls === 'work' ? '' : '-still'}.svg`, img = el.querySelector('img');
+    if (!img.src.endsWith(src.slice(2))) img.src = src;
+  }
+}
+function setStatus(i) { frameNow = i; const f = D.frames[i]; $('status').innerHTML = f ? ansi(f.ansi) : ''; crew(); }
+
+// The recorded session, turn by turn, on its own timeline (sped up by SPEED)
+const turns = (() => { const t = [[]]; D.said.forEach((x, i) => { if (x.kind === 'user' && i > 0) t.push([]); t[t.length - 1].push(x); }); return t; })();
+async function playTurn(k) {
+  const items = turns[k]; const t0 = items[0].t; const t1 = (turns[k + 1] || [{ t: Infinity }])[0].t;
+  const frames = D.frames.map((f, i) => ({ t: f.t, i })).filter(f => f.t >= t0 && f.t < t1);
+  const all = [...items.map(x => ({ ...x, k: 'say' })), ...frames.map(f => ({ ...f, k: 'frame' }))].sort((a, b) => a.t - b.t);
+  const start = performance.now();
+  for (const x of all) {
+    await wait(Math.max(0, (x.t - t0) * 1000 / SPEED - (performance.now() - start)));
+    if (x.k === 'frame') { setStatus(x.i); if (/\| [1-9] live/.test(D.frames[x.i].ansi)) document.body.dataset.live = '1'; }
+    else if (x.kind === 'user') { if (k === 0) log.innerHTML = ''; you(x.text); }
+    else if (x.kind === 'tool') tool(x.tool, x.arg);
+    else say(x.text);
+  }
+}
+async function turn1() { phase('planning'); await playTurn(0); phase('planned'); }
+async function turn2() { phase('building'); await playTurn(1); phase('finished'); }
+
+// An excerpt of the real final report (who did what + verification) and the final status line
+function finalState() {
+  log.innerHTML = '';
+  const report = D.said.filter(x => x.kind === 'text').pop().text;
+  const pick = (from, to) => { const a = report.indexOf(from); if (a < 0) return ''; const b = to ? report.indexOf(to, a + from.length) : -1; return report.slice(a, b < 0 ? undefined : b).trim(); };
+  you(turns[1][0].text);
+  add('msg', '<span style="color:var(--faint)">⋮ (report excerpt)</span>');
+  say(pick('**Who did what**', '**Verification'));
+  say(pick('**Verification', 'Run the tests'));
+  setStatus(D.frames.length - 1);
+  phase('finished');
+}
+
+$('prompt').addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  const v = e.target.value.trim(); e.target.value = '';
+  if (!v) return;
+  if (/^\/staff-of-chiefs/.test(v)) return turn1();
+  if (document.body.dataset.phase === 'planned') return turn2();
+});
+function route() {
+  if (location.hash === '#final') finalState();
+  $('intro').classList.toggle('on', location.hash === '#intro');
+  $('outro').classList.toggle('on', location.hash === '#outro');
+}
+window.addEventListener('hashchange', route);
+route(); crew();
+$('prompt').focus();
+</script>
+</body>
+</html>

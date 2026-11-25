@@ -1,0 +1,16 @@
+{
+  "name": "staff-of-chiefs",
+  "owner": {
+    "name": "staff-of-chiefs contributors"
+  },
+  "metadata": {
+    "description": "staff-of-chiefs: one Claude Code command that splits a task across a team of models, with a plan-first mode, a local dashboard and a terminal status line."
+  },
+  "plugins": [
+    {
+      "name": "staff-of-chiefs",
+      "source": "./",
+      "description": "Split a task across a team of models, with a plan-first mode, a local dashboard and a terminal status line."
+    }
+  ]
+}

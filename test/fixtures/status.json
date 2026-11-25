@@ -1,0 +1,14 @@
+{
+  "on": true,
+  "flags": "+plan +fable",
+  "budget": 150000,
+  "burn": 84000,
+  "live": 2,
+  "lead": { "model": "claude-opus-5-5", "eq": 12300 },
+  "agents": [
+    { "agent": "squad-sonnet", "tier": "sonnet", "status": "running", "task": "write tests for the /health endpoint", "eq": 3100, "last": "Bash" },
+    { "agent": "squad-haiku", "tier": "haiku", "status": "running", "task": "find all route registrations in src/server/routes and list them", "eq": 450, "last": "Grep" },
+    { "agent": "squad-fable", "tier": "fable", "status": "done", "task": "threat model for health endpoint", "eq": 21000, "last": "Read" }
+  ],
+  "updated": "2026-01-01T00:00:00Z"
+}

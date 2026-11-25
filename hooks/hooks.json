@@ -1,0 +1,20 @@
+{
+  "description": "staff-of-chiefs: mode switch, protocol injection and dispatch logging",
+  "hooks": {
+    "SessionStart": [
+      { "hooks": [ { "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/runtime/hook.js\"", "timeout": 5 } ] }
+    ],
+    "UserPromptSubmit": [
+      { "hooks": [ { "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/runtime/hook.js\"", "timeout": 5 } ] }
+    ],
+    "PreToolUse": [
+      { "matcher": "Agent|Task|Skill|Edit|Write|MultiEdit|NotebookEdit", "hooks": [ { "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/runtime/hook.js\"", "timeout": 5 } ] }
+    ],
+    "SubagentStart": [
+      { "hooks": [ { "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/runtime/hook.js\"", "timeout": 5 } ] }
+    ],
+    "SubagentStop": [
+      { "hooks": [ { "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/runtime/hook.js\"", "timeout": 5 } ] }
+    ]
+  }
+}

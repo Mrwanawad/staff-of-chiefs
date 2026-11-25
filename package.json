@@ -1,0 +1,29 @@
+{
+  "name": "staff-of-chiefs",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Claude Code skill: split a task across a team of models.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "homepage": "https://github.com/Mrwanawad/staff-of-chiefs#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mrwanawad/staff-of-chiefs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Mrwanawad/staff-of-chiefs/issues"
+  },
+  "keywords": [
+    "claude-code",
+    "claude-code-skill",
+    "claude-code-plugin",
+    "subagents",
+    "multi-model",
+    "orchestration"
+  ]
+}

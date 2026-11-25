@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-80 -175 160 190" width="160" height="190" role="img" aria-label="fable chef bot">
+  <defs>
+    <linearGradient id="shine" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="steel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a4a63"/><stop offset="1" stop-color="#1b263a"/></linearGradient>
+    <pattern id="tiles" width="40" height="40" patternUnits="userSpaceOnUse"><rect width="40" height="40" fill="#0b1426"/><path d="M40 0H0V40" fill="none" stroke="#14223d" stroke-width="2"/></pattern>
+    <radialGradient id="glow" cx=".5" cy=".55" r=".6"><stop offset="0" stop-color="#1b2f55" stop-opacity=".9"/><stop offset="1" stop-color="#0b1426" stop-opacity="0"/></radialGradient>
+  </defs><g><animateTransform attributeName="transform" type="translate" values="0 0;0 -3;0 0" dur="2.6s" begin="0s" repeatCount="indefinite" additive="sum" calcMode="spline" keySplines=".45 0 .55 1;.45 0 .55 1"/>
+      <g class="hat">
+    <rect x="-22" y="-96" width="44" height="10" fill="#f7f7f4"/>
+    <path transform="translate(0 -8)" d="M-25 -86 C-44 -88 -44 -118 -22 -116 C-20 -138 20 -138 22 -116 C44 -118 44 -88 25 -86 Z" fill="#f7f7f4" stroke="#d6dae2" stroke-width="2"/>
+    <path transform="translate(0 -8)" d="M-8 -118 C-6 -126 6 -126 8 -118" fill="none" stroke="#d6dae2" stroke-width="2" stroke-linecap="round"/>
+    <rect x="-27" y="-89" width="54" height="16" rx="4" fill="#ffffff" stroke="#d6dae2" stroke-width="2"/>
+  </g><rect x="-36" y="-74" width="72" height="80" rx="18" fill="#d787ff"/>
+    <rect x="-36" y="-74" width="72" height="80" rx="18" fill="url(#shine)"/>
+    <rect x="-26" y="-63" width="52" height="33" rx="10" fill="#0b1220"/>
+    <ellipse cx="-11" cy="-47" rx="4.6" ry="5.6" fill="#eaf6ff">
+      <animate attributeName="ry" values="5.6;5.6;.6;5.6" keyTimes="0;.9;.95;1" dur="4.2s" begin="0s" repeatCount="indefinite"/></ellipse><ellipse cx="11" cy="-47" rx="4.6" ry="5.6" fill="#eaf6ff">
+      <animate attributeName="ry" values="5.6;5.6;.6;5.6" keyTimes="0;.9;.95;1" dur="4.2s" begin="0s" repeatCount="indefinite"/></ellipse>
+    <path d="M-6 -38 Q0 -33 6 -38" fill="none" stroke="#eaf6ff" stroke-width="2.4" stroke-linecap="round"/>
+    <circle cx="-19" cy="-37" r="3" fill="#d787ff" opacity=".55"/><circle cx="19" cy="-37" r="3" fill="#d787ff" opacity=".55"/>
+    <path d="M-14 -24 L14 -24 L0 -12 Z" fill="#e8665c"/><circle cx="0" cy="-23" r="3.4" fill="#c94c43"/><g><animateTransform attributeName="transform" type="rotate" values="0 -40 -30;-4 -40 -30;0 -40 -30" dur="3.2s" begin="0s" repeatCount="indefinite" additive="sum" calcMode="spline" keySplines=".45 0 .55 1;.45 0 .55 1"/>
+        <rect x="-60" y="-58" width="38" height="50" rx="3" fill="#f4ecd8" stroke="#cdbf9f"/>
+        <rect x="-49" y="-62" width="16" height="7" rx="2" fill="#6b5a3e"/>
+        <rect x="-38" y="-48" width="12" height="3" fill="#8e99ae"/><path d="M-50 -46 l3 3 l6 -7" fill="none" stroke="#2f9e55" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="0">
+        <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.15;0.20;.92;1" dur="4.8s" repeatCount="indefinite"/></path><rect x="-38" y="-36" width="12" height="3" fill="#8e99ae"/><path d="M-50 -34 l3 3 l6 -7" fill="none" stroke="#2f9e55" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="0">
+        <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.35;0.40;.92;1" dur="4.8s" repeatCount="indefinite"/></path><rect x="-38" y="-24" width="12" height="3" fill="#8e99ae"/><path d="M-50 -22 l3 3 l6 -7" fill="none" stroke="#2f9e55" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="0">
+        <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.55;0.60;.92;1" dur="4.8s" repeatCount="indefinite"/></path>
+        <path d="M-34 -36 Q-44 -30 -46 -22" fill="none" stroke="#9256b8" stroke-width="9" stroke-linecap="round"/><circle cx="-46" cy="-22" r="6.5" fill="#9256b8"/></g>
+      <g transform="translate(40 -40)"><animateTransform attributeName="transform" type="rotate" values="0;-14;0" dur="1.6s" begin="0s" repeatCount="indefinite" additive="sum" calcMode="spline" keySplines=".45 0 .55 1;.45 0 .55 1"/>
+        <path d="M-6 6 Q2 -2 6 -14" fill="none" stroke="#9256b8" stroke-width="9" stroke-linecap="round"/>
+        <rect x="3" y="-34" width="5" height="22" rx="2" fill="#9256b8" transform="rotate(18 6 -14)"/><circle cx="6" cy="-14" r="6.5" fill="#9256b8"/></g></g>
+  <rect x="-80" y="0" width="160" height="15" fill="url(#steel)"/><rect x="-80" y="0" width="160" height="4" fill="#6f80a0"/>
+</svg>

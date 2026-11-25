@@ -1,0 +1,20 @@
+{
+  "name": "staff-of-chiefs",
+  "version": "0.1.0",
+  "description": "Split a task across a team of models: the main session leads and writes core code; Opus reviews, Sonnet builds side work, Haiku scouts, Fable (optional) plans. Plan-first mode, local dashboard and terminal status line.",
+  "author": {
+    "name": "staff-of-chiefs contributors",
+    "url": "https://github.com/Mrwanawad/staff-of-chiefs"
+  },
+  "license": "MIT",
+  "keywords": [
+    "subagents",
+    "multi-model",
+    "orchestration",
+    "skills",
+    "hooks",
+    "dashboard"
+  ],
+  "homepage": "https://github.com/Mrwanawad/staff-of-chiefs",
+  "repository": "https://github.com/Mrwanawad/staff-of-chiefs"
+}

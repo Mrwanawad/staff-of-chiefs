@@ -1,0 +1,15 @@
+node_modules/
+*.log
+.DS_Store
+demo/work/
+demo/build/
+
+# private working notes
+plan.md
+Checkpoint.md
+
+# private working notes
+plan.md
+Checkpoint.md
+demo/build-install/
+demo/*.gif
